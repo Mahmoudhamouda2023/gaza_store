@@ -8,7 +8,7 @@ class Category extends Model
 {
     //
     protected $guarded = [];
-    function product()
+    function products()
     {
 
         return $this->hasMany(Product::class);
@@ -16,5 +16,14 @@ class Category extends Model
     function image()
     {
         return $this->morphOne(Image::class, 'imageable');
+    }
+
+    function getImgPathAttribute()
+    {
+        $url = 'https://via.placeholder.com/100x80';
+        if ($this->image) {
+            $url = asset('images/' . $this->image->path);
+        }
+        return $url;
     }
 }
