@@ -269,48 +269,43 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
+                                {{-- <span class="badge badge-danger badge-counter">{{ Auth::User()->unreadnotifications->count() }}</span> --}}
+                                @php
+                                    $count = Auth::user()->unreadNotifications->count();
+                                @endphp
+
+                                @if ($count != 0)
+                                    <span class="badge badge-danger badge-counter">
+                                        @php
+                                            if ($count > 5) {
+                                                echo '5+';
+                                            } else {
+                                                echo $count;
+                                            }
+                                        @endphp
+                                    </span>
+                                @endif
                             </a>
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="alertsDropdown">
                                 <h6 class="dropdown-header">
-                                    Alerts Center
+                                    Notification Center
                                 </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
+                                @foreach (Auth::User()->notifications()->take(5)->get() as $item)
+                                    <a class="dropdown-item d-flex align-items-center {{ $item->read_at ? '' : 'bg-light' }}"
+                                        href="{{ $item->data['url'] }}?id={{ $item->id }}">
+
+                                        <div>
+                                            <div class="small text-gray-500">{{ $item->created_at->format('F d,Y') }}
+                                            </div>
+                                            <span class="font-weight-bold">{{ $item->data['msg'] }}</span>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All
+                                    </a>
+                                @endforeach
+
+                                <a class="dropdown-item text-center small text-gray-500"
+                                    href="{{ route('admin.notifications') }}">Show All
                                     Alerts</a>
                             </div>
                         </li>
@@ -321,14 +316,24 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle"
-                                    src="{{ asset('back/img/undraw_profile.svg') }}">
+                                @php
+                                    if (Auth::user()->image) {
+                                        // $src = asset('images/' . Auth::user()->image->path);
+                                        $src = asset('images/' . Auth::user()->image->path);
+                                    } else {
+                                        # code...
+
+                                        $src =
+                                            'https://ui-avatars.com/api/?background=random&name=' . Auth::user()->name;
+                                    }
+                                @endphp
+                                <img class="img-profile rounded-circle" src="{{ $src }}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                {{-- <a href="{{ route('admin.profile') }}">Profile</a> --}}
+                                <a class="dropdown-item" href="{{ route('admin.profile') }}">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
@@ -341,6 +346,22 @@
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
+                                {{-- <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button>{{ __('admin.out') }}</button>
+                                </form> --}}
+
+                                {{-- كود جديد --}}
+                                <a class="dropdown-item" href="#"
+                                    onclick="document.getElementById('logout-form').submit()">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    {{ __('admin.out') }}
+                                </a>
+
+
+
+
+
                                 <a class="dropdown-item" href="#" data-toggle="modal"
                                     data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -444,6 +465,10 @@
     <!-- ===== END DARK MODE SCRIPT ===== -->
 
     @yield('js')
+
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none">
+        @csrf
+    </form>
 </body>
 
 </html>

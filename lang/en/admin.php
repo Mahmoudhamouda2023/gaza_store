@@ -11,5 +11,5 @@ return [
     'payments' => 'Payments',
     'customers' => 'Customers',
     'add_new' => 'Add_New',
-
+    'out' => 'Logout'
 ];

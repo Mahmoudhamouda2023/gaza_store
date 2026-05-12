@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ApiController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,4 +19,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
+
+
+// Api test route
+Route::get('old-products', [ApiController::class, 'products']);
+Route::get('weather', [ApiController::class, 'weather']);
+Route::get('/send', [NotificationController::class, 'send']);

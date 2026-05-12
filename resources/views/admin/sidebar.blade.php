@@ -57,8 +57,8 @@
         <div id="collapseProduct" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
 
-                <a class="collapse-item" href="buttons.html">{{ __('admin.all_products') }} </a>
-                <a class="collapse-item" href="cards.html">{{ __('admin.add_new') }}</a>
+                <a class="collapse-item" href="{{ route('admin.products.index') }}">{{ __('admin.all_products') }} </a>
+                <a class="collapse-item" href="{{ route('admin.products.create') }}">{{ __('admin.add_new') }}</a>
             </div>
 
         </div>
@@ -68,7 +68,7 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="{{ route('admin.orders') }}">
             <i class="fas fa-fw fa-shopping-cart"></i>
             <span>{{ __('admin.orders') }}</span></a>
     </li>
