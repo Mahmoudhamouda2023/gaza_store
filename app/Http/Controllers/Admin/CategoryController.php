@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -33,13 +34,21 @@ class CategoryController extends Controller
 
         $img_name = rand() . time() . $request->file('image')->getClientOriginalName();
         $request->file('image')->move(public_path('images'), $img_name);
+
         $category->image()->create([
             'path' => $img_name
         ]);
 
-
+        ActivityLog::create([
+            'admin_id' => auth('admin')->id(),
+            'action' => 'created',
+            'model' => 'Category',
+            'model_id' => $category->id,
+            'description' => 'Created category: ' . $category->name,
+        ]);
 
         flash()->success('Category added successfully');
+
         return redirect()->route('admin.categories.index');
     }
 
@@ -63,11 +72,14 @@ class CategoryController extends Controller
         $data = $request->except('_token', 'image');
 
         if ($request->hasFile('image')) {
-            File::delete(public_path('images/' . $category->image?->path));
-            $category->image()->delete();
+            if ($category->image) {
+                File::delete(public_path('images/' . $category->image->path));
+                $category->image()->delete();
+            }
 
             $img_name = rand() . time() . $request->file('image')->getClientOriginalName();
             $request->file('image')->move(public_path('images'), $img_name);
+
             $category->image()->create([
                 'path' => $img_name
             ]);
@@ -75,16 +87,36 @@ class CategoryController extends Controller
 
         $category->update($data);
 
-
+        ActivityLog::create([
+            'admin_id' => auth('admin')->id(),
+            'action' => 'updated',
+            'model' => 'Category',
+            'model_id' => $category->id,
+            'description' => 'Updated category: ' . $category->name,
+        ]);
 
         flash()->info('Category updated successfully');
+
         return redirect()->route('admin.categories.index');
     }
 
     public function destroy(Category $category)
     {
-        $category->delete(); // الصورة تتحذف تلقائياً من الـ Model Event
+        $categoryId = $category->id;
+        $categoryName = $category->name;
+
+        $category->delete();
+
+        ActivityLog::create([
+            'admin_id' => auth('admin')->id(),
+            'action' => 'deleted',
+            'model' => 'Category',
+            'model_id' => $categoryId,
+            'description' => 'Deleted category: ' . $categoryName,
+        ]);
+
         flash()->info('Category deleted successfully');
+
         return redirect()->route('admin.categories.index');
     }
 }

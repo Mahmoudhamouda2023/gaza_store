@@ -35,4 +35,13 @@ return [
         ],
     ],
 
+    'stripe' => [
+        'key' => env('STRIPE_KEY'),
+        'secret' => env('STRIPE_SECRET'),
+    ],
+
+    'myfatoorah' => [
+        'token' => env('MYFATOORAH_TOKEN'),
+        'base_url' => env('MYFATOORAH_BASE_URL', 'https://apitest.myfatoorah.com'),
+    ],
 ];

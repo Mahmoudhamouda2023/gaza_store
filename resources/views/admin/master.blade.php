@@ -1,87 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
     <title>@yield('title', env('APP_NAME'))</title>
 
-    <!-- Custom fonts for this template-->
     <link href="{{ asset('back/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
 
-    <!-- Custom styles for this template-->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+
     <link href="{{ asset('back/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
     <style>
-        /* ===== DARK MODE STYLES ===== */
         body.dark-mode {
             background-color: #1a1a2e !important;
             color: #e0e0e0 !important;
         }
 
-        body.dark-mode #wrapper {
-            background-color: #1a1a2e;
-        }
-
-        /* Sidebar */
-        body.dark-mode .sidebar {
-            background: linear-gradient(180deg, #0d0d1a 10%, #1a1a2e 100%) !important;
-        }
-
-        /* Topbar */
-        body.dark-mode .topbar {
-            background-color: #16213e !important;
-        }
-
-        body.dark-mode .navbar-nav .nav-link {
-            color: #c0c0c0 !important;
-        }
-
-        body.dark-mode .text-gray-600 {
-            color: #b0b0b0 !important;
-        }
-
-        /* Content Wrapper */
+        body.dark-mode #wrapper,
         body.dark-mode #content-wrapper {
             background-color: #1a1a2e !important;
         }
 
-        /* Cards */
-        body.dark-mode .card {
+        body.dark-mode .sidebar {
+            background: linear-gradient(180deg, #0d0d1a 10%, #1a1a2e 100%) !important;
+        }
+
+        body.dark-mode .topbar,
+        body.dark-mode .sticky-footer {
+            background-color: #16213e !important;
+            color: #b0b0b0 !important;
+        }
+
+        body.dark-mode .navbar-nav .nav-link,
+        body.dark-mode .text-gray-600 {
+            color: #b0b0b0 !important;
+        }
+
+        body.dark-mode .card,
+        body.dark-mode .modal-content,
+        body.dark-mode .dropdown-menu {
             background-color: #16213e !important;
             border-color: #2a2a4a !important;
             color: #e0e0e0 !important;
         }
 
-        body.dark-mode .card-header {
+        body.dark-mode .card-header,
+        body.dark-mode .table thead th,
+        body.dark-mode .dropdown-header {
             background-color: #0f3460 !important;
-            border-bottom-color: #2a2a4a !important;
+            border-color: #2a2a4a !important;
             color: #e0e0e0 !important;
         }
 
-        /* Tables */
         body.dark-mode .table {
             color: #e0e0e0 !important;
         }
 
-        body.dark-mode .table thead th {
-            border-bottom-color: #2a2a4a !important;
-            background-color: #0f3460 !important;
-            color: #e0e0e0 !important;
-        }
-
         body.dark-mode .table td,
-        body.dark-mode .table th {
-            border-top-color: #2a2a4a !important;
-        }
-
+        body.dark-mode .table th,
         body.dark-mode .table-bordered td,
         body.dark-mode .table-bordered th {
             border-color: #2a2a4a !important;
@@ -96,18 +82,6 @@
             color: #e0e0e0 !important;
         }
 
-        /* Footer */
-        body.dark-mode .sticky-footer {
-            background-color: #16213e !important;
-            color: #b0b0b0 !important;
-        }
-
-        /* Dropdowns */
-        body.dark-mode .dropdown-menu {
-            background-color: #16213e !important;
-            border-color: #2a2a4a !important;
-        }
-
         body.dark-mode .dropdown-item {
             color: #c0c0c0 !important;
         }
@@ -117,16 +91,6 @@
             color: #ffffff !important;
         }
 
-        body.dark-mode .dropdown-divider {
-            border-top-color: #2a2a4a !important;
-        }
-
-        body.dark-mode .dropdown-header {
-            background-color: #0f3460 !important;
-            color: #c0c0c0 !important;
-        }
-
-        /* Forms */
         body.dark-mode .form-control {
             background-color: #0f3460 !important;
             border-color: #2a2a4a !important;
@@ -143,36 +107,20 @@
             color: #7a7a9a !important;
         }
 
-        /* Modals */
-        body.dark-mode .modal-content {
-            background-color: #16213e !important;
+        body.dark-mode .modal-header,
+        body.dark-mode .modal-footer,
+        body.dark-mode .dropdown-divider {
             border-color: #2a2a4a !important;
-            color: #e0e0e0 !important;
-        }
-
-        body.dark-mode .modal-header {
-            border-bottom-color: #2a2a4a !important;
-        }
-
-        body.dark-mode .modal-footer {
-            border-top-color: #2a2a4a !important;
         }
 
         body.dark-mode .close {
             color: #e0e0e0 !important;
         }
 
-        /* Divider */
-        body.dark-mode .topbar-divider {
-            border-right-color: #2a2a4a !important;
-        }
-
-        /* Scroll to top button */
         body.dark-mode .scroll-to-top {
             background-color: #4a90e2 !important;
         }
 
-        /* ===== TOGGLE BUTTON STYLES ===== */
         #darkModeToggle {
             cursor: pointer;
             border: none;
@@ -192,6 +140,137 @@
         #darkModeToggle .toggle-icon {
             font-size: 1rem;
         }
+
+        .language-selector select {
+            min-width: 120px;
+            height: 34px;
+            border-radius: 6px;
+            border: 1px solid #d1d3e2;
+            padding: 0 8px;
+            color: #6e707e;
+            background: #fff;
+            outline: none;
+        }
+
+        .pagination {
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .pagination .page-item {
+            margin: 0 2px;
+        }
+
+        .pagination .page-link {
+            width: 36px !important;
+            height: 36px !important;
+            padding: 0 !important;
+            border-radius: 8px !important;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px !important;
+            line-height: 1 !important;
+        }
+
+        .pagination .page-item svg,
+        .pagination svg,
+        nav[role="navigation"] svg {
+            width: 16px !important;
+            height: 16px !important;
+            max-width: 16px !important;
+            max-height: 16px !important;
+        }
+
+        nav[role="navigation"]>div:first-child {
+            display: none !important;
+        }
+
+        html[dir="rtl"] body {
+            font-family: 'Cairo', sans-serif;
+            text-align: right;
+        }
+
+        html[dir="rtl"] .sidebar,
+        html[dir="rtl"] .topbar,
+        html[dir="rtl"] .dropdown-menu {
+            direction: rtl;
+            text-align: right;
+        }
+
+        html[dir="rtl"] .sidebar .nav-item .nav-link,
+        html[dir="rtl"] .collapse-inner {
+            text-align: right;
+        }
+
+        html[dir="rtl"] table {
+            direction: rtl;
+        }
+
+        html[dir="rtl"] .table th,
+        html[dir="rtl"] .table td {
+            text-align: right !important;
+        }
+
+        html[dir="rtl"] .mr-2 {
+            margin-right: 0 !important;
+            margin-left: .5rem !important;
+        }
+
+        html[dir="rtl"] .ml-auto {
+            margin-left: unset !important;
+            margin-right: auto !important;
+        }
+
+        html[dir="rtl"] .dropdown-menu-right {
+            right: auto;
+            left: 0;
+        }
+
+        html[dir="rtl"] .sidebar .nav-link i {
+            margin-left: 8px;
+            margin-right: 0;
+        }
+
+        html[dir="rtl"] .sidebar .nav-item .nav-link[data-toggle="collapse"] {
+            display: flex !important;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+        }
+
+        html[dir="rtl"] .sidebar .nav-item .nav-link[data-toggle="collapse"] i {
+            flex: 0 0 auto;
+            margin-left: 8px;
+            margin-right: 0;
+        }
+
+        html[dir="rtl"] .sidebar .nav-item .nav-link[data-toggle="collapse"] span {
+            flex: 1 1 auto;
+        }
+
+        html[dir="rtl"] .sidebar .nav-item .nav-link[data-toggle="collapse"]::after {
+            float: none !important;
+            position: static !important;
+            flex: 0 0 auto;
+            margin-right: auto !important;
+            margin-left: 0 !important;
+            transform: rotate(180deg);
+        }
+
+        html[dir="rtl"] .sidebar .nav-item .nav-link[data-toggle="collapse"].collapsed::after {
+            transform: rotate(180deg);
+        }
+
+        html[dir="rtl"] .card-header,
+        html[dir="rtl"] .card-body {
+            text-align: right;
+        }
+
+        html[dir="rtl"] .btn {
+            direction: rtl;
+        }
     </style>
 
     @yield('css')
@@ -199,276 +278,239 @@
 
 <body id="page-top">
 
-    <!-- Page Wrapper -->
     <div id="wrapper">
 
         @include('admin.sidebar')
 
-        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
 
-            <!-- Main Content -->
             <div id="content">
 
-                <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-                    <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
 
-                    <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <div class="language-selector">
-                            <select id="languageDropdown">
-                                @foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                                    <option
-                                        value="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
-                                        {{ $properties['native'] }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
 
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for..." aria-label="Search"
-                                            aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
+                        <li class="nav-item d-flex align-items-center mx-2">
+                            <div class="language-selector">
+                                <select id="languageDropdown">
+                                    @foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                                        <option
+                                            value="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"
+                                            {{ app()->getLocale() == $localeCode ? 'selected' : '' }}>
+                                            {{ $properties['native'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </li>
 
-                        <!-- ===== DARK MODE TOGGLE ===== -->
                         <li class="nav-item d-flex align-items-center">
                             <button id="darkModeToggle" title="Toggle Dark/Light Mode">
                                 <i class="toggle-icon fas fa-moon"></i>
                             </button>
                         </li>
-                        <!-- ===== END DARK MODE TOGGLE ===== -->
 
-                        <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
+
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
                                 <i class="fas fa-bell fa-fw"></i>
-                                <!-- Counter - Alerts -->
-                                {{-- <span class="badge badge-danger badge-counter">{{ Auth::User()->unreadnotifications->count() }}</span> --}}
+
                                 @php
-                                    $count = Auth::user()->unreadNotifications->count();
+                                    $count = Auth::guard('admin')->user()->unreadNotifications->count() ?? 0;
                                 @endphp
 
-                                @if ($count != 0)
-                                    <span class="badge badge-danger badge-counter">
-                                        @php
-                                            if ($count > 5) {
-                                                echo '5+';
-                                            } else {
-                                                echo $count;
-                                            }
-                                        @endphp
-                                    </span>
-                                @endif
+                                <span class="{{ $count == 0 ? 'd-none' : '' }} badge badge-danger badge-counter"
+                                    data-count="{{ $count }}">
+                                    {{ $count > 5 ? '5+' : $count }}
+                                </span>
                             </a>
-                            <!-- Dropdown - Alerts -->
+
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="alertsDropdown">
+
                                 <h6 class="dropdown-header">
-                                    Notification Center
+                                    {{ __('admin.notification_center') }}
                                 </h6>
-                                @foreach (Auth::User()->notifications()->take(5)->get() as $item)
+
+                                @foreach (Auth::guard('admin')->user()->notifications()->take(5)->get() as $item)
                                     <a class="dropdown-item d-flex align-items-center {{ $item->read_at ? '' : 'bg-light' }}"
                                         href="{{ $item->data['url'] }}?id={{ $item->id }}">
 
                                         <div>
-                                            <div class="small text-gray-500">{{ $item->created_at->format('F d,Y') }}
+                                            <div class="small text-gray-500">
+                                                {{ $item->created_at->format('F d,Y') }}
                                             </div>
-                                            <span class="font-weight-bold">{{ $item->data['msg'] }}</span>
+
+                                            <span class="font-weight-bold">
+                                                {{ $item->data['msg'] }}
+                                            </span>
                                         </div>
                                     </a>
                                 @endforeach
 
                                 <a class="dropdown-item text-center small text-gray-500"
-                                    href="{{ route('admin.notifications') }}">Show All
-                                    Alerts</a>
+                                    href="{{ route('admin.notifications') }}">
+                                    {{ __('admin.show_all_alerts') }}
+                                </a>
+
                             </div>
                         </li>
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
-                        <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
+
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                @php
-                                    if (Auth::user()->image) {
-                                        // $src = asset('images/' . Auth::user()->image->path);
-                                        $src = asset('images/' . Auth::user()->image->path);
-                                    } else {
-                                        # code...
 
+                                @php
+                                    $adminUser = Auth::guard('admin')->user();
+
+                                    if ($adminUser && $adminUser->image) {
+                                        $src = asset('images/' . $adminUser->image->path);
+                                    } else {
                                         $src =
-                                            'https://ui-avatars.com/api/?background=random&name=' . Auth::user()->name;
+                                            'https://ui-avatars.com/api/?background=random&name=' .
+                                            ($adminUser->name ?? 'Admin');
                                     }
                                 @endphp
+
                                 <img class="img-profile rounded-circle" src="{{ $src }}">
                             </a>
-                            <!-- Dropdown - User Information -->
+
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                {{-- <a href="{{ route('admin.profile') }}">Profile</a> --}}
+
                                 <a class="dropdown-item" href="{{ route('admin.profile') }}">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
+                                    {{ __('admin.profile') }}
                                 </a>
+
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
+                                    {{ __('admin.settings') }}
                                 </a>
+
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
+                                    {{ __('admin.activity_logs') }}
                                 </a>
-                                <div class="dropdown-divider"></div>
-                                {{-- <form action="{{ route('logout') }}" method="POST">
-                                    @csrf
-                                    <button>{{ __('admin.out') }}</button>
-                                </form> --}}
 
-                                {{-- كود جديد --}}
+                                <div class="dropdown-divider"></div>
+
                                 <a class="dropdown-item" href="#"
-                                    onclick="document.getElementById('logout-form').submit()">
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     {{ __('admin.out') }}
                                 </a>
 
-
-
-
-
-                                <a class="dropdown-item" href="#" data-toggle="modal"
-                                    data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
                             </div>
                         </li>
 
                     </ul>
 
                 </nav>
-                <!-- End of Topbar -->
 
-                <!-- Begin Page Content -->
                 <div class="container-fluid">
-
                     @yield('content')
                 </div>
-                <!-- /.container-fluid -->
 
             </div>
-            <!-- End of Main Content -->
 
-            <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
+                        <span>{{ __('admin.copyright') }}</span>
                     </div>
                 </div>
             </footer>
-            <!-- End of Footer -->
 
         </div>
-        <!-- End of Content Wrapper -->
 
     </div>
-    <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('back/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="{{ asset('back/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
-    <!-- Core plugin JavaScript-->
     <script src="{{ asset('back/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
-
-    <!-- Custom scripts for all pages-->
     <script src="{{ asset('back/js/sb-admin-2.min.js') }}"></script>
 
-    <!-- ===== DARK MODE SCRIPT ===== -->
+    <script>
+        (function() {
+            const languageDropdown = document.getElementById('languageDropdown');
+
+            if (languageDropdown) {
+                languageDropdown.addEventListener('change', function() {
+                    window.location.href = this.value;
+                });
+            }
+        })();
+    </script>
+
     <script>
         (function() {
             const toggle = document.getElementById('darkModeToggle');
+
+            if (!toggle) {
+                return;
+            }
+
             const icon = toggle.querySelector('.toggle-icon');
             const body = document.body;
 
-            // Load saved preference from localStorage
             if (localStorage.getItem('darkMode') === 'enabled') {
                 body.classList.add('dark-mode');
-                icon.classList.replace('fa-moon', 'fa-sun');
+
+                if (icon) {
+                    icon.classList.replace('fa-moon', 'fa-sun');
+                }
             }
 
             toggle.addEventListener('click', function() {
                 if (body.classList.contains('dark-mode')) {
                     body.classList.remove('dark-mode');
-                    icon.classList.replace('fa-sun', 'fa-moon');
+
+                    if (icon) {
+                        icon.classList.replace('fa-sun', 'fa-moon');
+                    }
+
                     localStorage.setItem('darkMode', 'disabled');
                 } else {
                     body.classList.add('dark-mode');
-                    icon.classList.replace('fa-moon', 'fa-sun');
+
+                    if (icon) {
+                        icon.classList.replace('fa-moon', 'fa-sun');
+                    }
+
                     localStorage.setItem('darkMode', 'enabled');
                 }
             });
         })();
     </script>
-    <!-- ===== END DARK MODE SCRIPT ===== -->
 
-    @yield('js')
+    <script>
+        window.userId = '{{ Auth::guard('admin')->id() }}';
+    </script>
 
-    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none">
+    @vite(['resources/js/app.js'])
+
+    <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display:none">
         @csrf
     </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @yield('js')
 </body>
 
 </html>

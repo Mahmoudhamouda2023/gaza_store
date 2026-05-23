@@ -1,28 +1,32 @@
 @extends('admin.master')
 
+@section('title', __('admin.edit_product'))
+
 @section('content')
-    <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800">Edit Product</h1>
+    <h1 class="h3 mb-4 text-gray-800">
+        {{ __('admin.edit_product') }}
+    </h1>
 
     <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('put')
+
         @include('admin.products._form')
 
         <button class="btn btn-success">
-            <i class="fas fa-save"></i> Update
+            <i class="fas fa-save"></i>
+            {{ __('admin.update') }}
         </button>
     </form>
 @endsection
-
-@section('title', 'Edit Product')
 
 @section('js')
     <script>
         function showImg(e) {
             const [file] = e.target.files;
+
             if (file) {
-                const previewId = e.target.name === 'gallery[]' ? 'preview-gallery' : 'preview';
+                const previewId = e.target.name === 'image' ? 'preview' : 'galleryPreview';
                 document.getElementById(previewId).src = URL.createObjectURL(file);
             }
         }

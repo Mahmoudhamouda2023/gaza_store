@@ -9,18 +9,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 class IsAdmin
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  Closure(Request): (Response)  $next
-     */
     public function handle(Request $request, Closure $next): Response
     {
-        // dd(Auth::user());  // لطباعة معلومات المستخدم
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
 
-        if (Auth::user()->type == 'customer') {
+        $roleName = Auth::user()->role->name ?? null;
+
+        if (!in_array($roleName, ['admin', 'manager'])) {
             return redirect('/');
         }
+
         return $next($request);
     }
 }

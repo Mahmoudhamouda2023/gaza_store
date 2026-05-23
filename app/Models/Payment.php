@@ -6,14 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
-    //
     protected $guarded = [];
-    function user()
+
+    protected $casts = [
+        'paid_at' => 'datetime',
+    ];
+
+    public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withDefault();
     }
-    function order()
+
+    public function order()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Order::class)->withDefault();
     }
 }

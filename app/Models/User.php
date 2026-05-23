@@ -2,67 +2,63 @@
 
 namespace App\Models;
 
+use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['name', 'email', 'password', 'type'])]
-#[Hidden(['password', 'remember_token'])]
+#[Fillable(['name', 'email', 'password', 'type', 'role_id', 'image', 'phone'])] #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    // protected $casts = [
-    //     'email_verified_at' => 'datetime',
-    //     'password' => 'hashed',
-    // ];
-
-    /**
-     * Role relationship.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function role()
     {
         return $this->belongsTo(Role::class)->withDefault();
     }
 
-    function image()
+    public function image()
     {
         return $this->morphOne(Image::class, 'imageable');
     }
-    function reviews()
+
+    public function reviews()
     {
         return $this->hasMany(Review::class);
     }
-    function carts()
+
+    public function carts()
     {
         return $this->hasMany(Cart::class);
     }
-    function order()
+
+    public function order()
     {
         return $this->hasMany(Order::class);
     }
-    function order_details()
+
+    public function order_details()
     {
         return $this->hasMany(OrderDetail::class);
     }
-    function payment()
+
+    public function payment()
     {
         return $this->hasMany(Payment::class);
     }
-    function testimonial()
+
+    public function testimonial()
     {
         return $this->hasMany(Testimonial::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }
